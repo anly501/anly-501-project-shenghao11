@@ -1,9 +1,11 @@
 
 body {
     font-family:verdana;
-    background-image: url(images/backgroud.jpg);
-    background-size: auto;
-    background-size: 1500px 800px;
+    background-image: url(images/background.jpg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+
     background-color:;
 
 }
@@ -23,7 +25,7 @@ li {
 
 li a, .dropbtn {
     display: inline-block;
-    color: #ffffff;
+    color: #000000;
     font-family:arial;
     text-align: center;
     margin-left: 30px;
@@ -43,7 +45,7 @@ li.dropdown {
 .dropdown-content {
     display: none;
     position: absolute;
-    background-color: white;
+    background-color: rgb(0, 0, 0);
     min-width: 160px;   
 }
 
@@ -63,7 +65,7 @@ li.dropdown {
 
 td {
     padding: 5px;
-    color: #ffffff;
+    color: #000000;
     text-align: left;
     width: 300px;
 }
