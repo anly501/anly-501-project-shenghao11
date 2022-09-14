@@ -1,8 +1,10 @@
 
 body {
     font-family:verdana;
-    background-image: ;
-    background-color: ;
+    background-image: url(images/backgroud.jpg);
+    background-size: auto;
+    background-size: 1500px 800px;
+    background-color:;
 
 }
 
@@ -11,8 +13,8 @@ ul {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: #004d99;
-    max-width:1357px;
+    background-color: ;
+    max-width:3000px;
 }
 
 li {
@@ -21,9 +23,11 @@ li {
 
 li a, .dropbtn {
     display: inline-block;
-    color: white;
+    color: #ffffff;
+    font-family:arial;
     text-align: center;
-    padding: 14px 16px;
+    margin-left: 30px;
+    padding-top: 5px;
     text-decoration: none;
 }
 
@@ -58,14 +62,15 @@ li.dropdown {
 
 td {
     padding: 5px;
+    color: #ffffff;
     text-align: left;
-    width: 500px;
+    width: 300px;
 }
 
 tr{
     padding: 0px;
     text-align: top;
-    background-color:#ffffff
+    background-color:
 }
 
 img:hover {
