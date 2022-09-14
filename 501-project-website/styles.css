@@ -83,8 +83,8 @@ img:hover {
 .center{
     position:absolute;
     width:500px;
-    height:300px;
-    left:55%;
+    height:100px;
+    left:100%;
     top:100%;
     margin-left:-380px;
     margin-top:-325px;
