@@ -83,7 +83,7 @@ api = tweepy.API(auth, wait_on_rate_limit=True)
 #----------------------
 
 #SEARCH PARAM
-query="Trump OR Mar-a-Lago OR Donald"
+query="population"
 
 # NUMBER OF TWEETS TO SEARCH 
 # number_of_tweets=1000 
