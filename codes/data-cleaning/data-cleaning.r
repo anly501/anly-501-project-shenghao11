@@ -7,7 +7,7 @@ popultaion <- popultaion[,!(names(popultaion) %in% 'Code')]
 head(population)
 
 # gdp data
-gdp <- read.csv(file = '../../data/00-raw-data/gdp-per-capita-growth.csv')
+gdp <- read.csv(file = '../../data/00-raw-data/gdp-per-capita-worldbank.csv')
 gdp <- gdp[,!(names(gdp) %in% 'Code')]
 head(gdp)
 
@@ -40,6 +40,4 @@ df<-merge(df,disease,by=c("Entity","Year"))
 
 df<-df[!duplicated(df),]
 dfpast<-df[df$Year<2022,]
-dffuture<-df[df$Year>2021,]
 write.csv(dfpast,'../../data/01-modified-data/cleaned-population-past-r.csv', row.names = TRUE)
-write.csv(dffuture,'../../data/01-modified-data/cleaned-population-future-r.csv', row.names = TRUE)
