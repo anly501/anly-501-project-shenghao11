@@ -30,13 +30,16 @@ population$Year_norm = (population$Year - mean(population$Year))/sd(population$Y
 population$Label = round(population$Natural_growth_rate)
 population<-population[population$Label!=-6,]
 
-population$Label<-as.factor(population$Label)
+hist(population$Label)
+
 ```
 
 
 
 
 ```{r}
+population$Label<-as.factor(population$Label)
+#split train and test
 trainIndex <- createDataPartition(population$Label,p=0.8,list=FALSE)
 train <- population[trainIndex,] #training data
 train <- train[, -c(2:6)]
@@ -45,14 +48,13 @@ test <- test[, -c(2:6)]
 ```
 
 
+
 ```{r}
 #Naive Bayes Classification
 model <- naive_bayes(Label ~ -Entity, data = train) 
-png(filename="../../501-project-website/images/naive_bayes_r.png")
-plot(model) 
-dev.off()
 plot(model) 
 ```
+
 ```{r}
 y_pred <- predict(model, newdata = test)
 (tab2 <- table(y_pred, test$Label))
