@@ -51,6 +51,7 @@ model <- naive_bayes(Label ~ -Entity, data = train)
 png(filename="../../501-project-website/images/naive_bayes_r.png")
 plot(model) 
 dev.off()
+plot(model) 
 ```
 ```{r}
 y_pred <- predict(model, newdata = test)
