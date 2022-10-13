@@ -54,6 +54,7 @@
         </div>
     </li>
 
+
     <!-- tab without dropdown  -->
     <li class="dropdown">
         <a href="javascript:void(0)" class="dropbtn">Naive Bayes</a>
@@ -63,6 +64,8 @@
         <a href="https://github.com/anly501/anly-501-project-shenghao11/tree/main/codes/naive_bayes_R"> code r</a>
         </div>
     </li>
+
+
 
     <!-- tab without dropdown  -->
     <li><a href="../pages/introduction.html">Decision Trees</a></li>
@@ -90,22 +93,44 @@
    <tr>
       <!--ROW-1 COL-1-->
         <td>
-            original data
-            <img src="../images/head-of-gdp.png" width="500" height="500">            
-
-            <img src="../images/head-of-population-growth.png" width="500" height="500">
+            <h2 style="text-align:left; color:rgb(0, 0, 0);">Data prepared for analysis:</h2>
+            <p  style="font-size:15px;"> I obtain label by approximating natural growth rate. I set the label is y. I set other variables to x and normalize them by (x-xmean)/xstd. By normalizing the variables, I can see if a set of measured variables is really measuring the same thing. After the data prepared for analysis, split the whole data to train set (80%) and test set(20%). I use naïve bayes to fit the model predict the test y.</p>
         </td>
    </tr>
 
-    <!--ROW-2-->
    <tr>
-      <!--ROW-2 COL-1-->
-        <td>
-            clean data
-            <img src="../images/head_of_clean_data.png" width="500" height="500">
+    <!--ROW-2 COL-1-->
+      <td>
+          <h2 style="text-align:left; color:rgb(0, 0, 0);">python:</h2>
+          <p  style="font-size:15px;">  the predict work not very well. The accuracy of the predict is only around 40 percent.</p>
+          <img src="../images/naive_bayes_python_train.png" width="500" height="500">
+          <p  style="font-size:15px;"> train data</p>
+          <img src="../images/naive_bayes_python_test.png" width="500" height="500">
+          <p  style="font-size:15px;"> test data</p>
+      </td>
+    </tr>
 
-        </td>
-   </tr>
+    <tr>
+    <!--ROW-3 COL-1-->
+    <td>
+        <h2 style="text-align:left; color:rgb(0, 0, 0);">R:</h2>
+        <p  style="font-size:15px;">  the predict work  well. The accuracy of the predict is only around 80 percent.</p>
+        <img src="../images/naive_bayes_r.png" width="500" height="500">
+        <p  style="font-size:15px;"> naive bayes plot</p>
+    </td>
+    </tr>
+
+    <tr>
+        <!--ROW-3 COL-1-->
+        <td>
+            <h2 style="text-align:left; color:rgb(0, 0, 0);">Conclusion:</h2>
+            <p  style="font-size:15px;">Naive Bayes classifier is a collection of classification algorithms based on Bayes' theorem. Overall naive bayes works well in this part</p>
+    </td>
+    </tr>
+    
+
+
+
 
 
 

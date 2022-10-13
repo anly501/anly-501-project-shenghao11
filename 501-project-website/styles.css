@@ -1,12 +1,9 @@
-
 body {
     font-family:verdana;
-    background-image: url(images/background.jpg);
+    background-image: url(images/background1.jpg);
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center;
-    background-color:;
-
 }
 
 ul {
@@ -81,12 +78,11 @@ img:hover {
 }
 
 .center{
-    position:absolute;
-    left:100%;
-    top:100%;
-    margin-left:-350px;
-    margin-top:-220px;
-    line-height:30%
+
+    margin-left:auto;
+    margin-top:auto;
+    margin-right:auto;
 }
+
 
   

@@ -83,7 +83,7 @@ api = tweepy.API(auth, wait_on_rate_limit=True)
 #----------------------
 
 #SEARCH PARAM
-query="population"
+query="natural growth rate"
 
 # NUMBER OF TWEETS TO SEARCH 
 # number_of_tweets=1000 
