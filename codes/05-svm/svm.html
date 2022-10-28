@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.251">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>SVM</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="svm_files/libs/clipboard/clipboard.min.js"></script>
+<script src="svm_files/libs/quarto-html/quarto.js"></script>
+<script src="svm_files/libs/quarto-html/popper.min.js"></script>
+<script src="svm_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="svm_files/libs/quarto-html/anchor.min.js"></script>
+<link href="svm_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="svm_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="svm_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="svm_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="svm_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Contents</h2>
+   
+  <ul>
+  <li><a href="#using-svm-to-my-data" id="toc-using-svm-to-my-data" class="nav-link active" data-scroll-target="#using-svm-to-my-data">using svm to my data</a></li>
+  <li><a href="#clean-data" id="toc-clean-data" class="nav-link" data-scroll-target="#clean-data">clean data</a></li>
+  <li><a href="#svm-with-linear-kernels" id="toc-svm-with-linear-kernels" class="nav-link" data-scroll-target="#svm-with-linear-kernels">SVM with Linear kernels</a></li>
+  <li><a href="#svm-with-polynomial-kernels" id="toc-svm-with-polynomial-kernels" class="nav-link" data-scroll-target="#svm-with-polynomial-kernels">SVM with Polynomial kernels</a></li>
+  <li><a href="#svm-with-rbf-kernels" id="toc-svm-with-rbf-kernels" class="nav-link" data-scroll-target="#svm-with-rbf-kernels">SVM with RBF kernels</a></li>
+  <li><a href="#svm-with-sigmoid-kernels" id="toc-svm-with-sigmoid-kernels" class="nav-link" data-scroll-target="#svm-with-sigmoid-kernels">SVM with Sigmoid kernels</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">conclusion</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">SVM</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<section id="using-svm-to-my-data" class="level1">
+<h1>using svm to my data</h1>
+<p>I am using support vector machines(svm) to classifer and preidct the natural population growth rate. In the dataframe, you can see I collect the gdp, year, country, death rate, birth rate, Life expectancy and DALYs (Disability-Adjusted Life Years). SVM used to analyze data for classification and regression analysis. I can tell which factor causes the natural growth rate. After I cleaned up the data and used SVM with Linear kernels, I achieved an accuracy of 92%, which indicates thatMy model can predict the natural population growth rate with an accuracy of 92%. But the accuracy for negative growth rates is only around 70%.</p>
+</section>
+<section id="clean-data" class="level1">
+<h1>clean data</h1>
+<div class="cell" data-execution_count="2">
+<div class="cell-output cell-output-display" data-execution_count="21">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Unnamed: 0</th>
+      <th>Entity</th>
+      <th>Year</th>
+      <th>Natural_growth_rate</th>
+      <th>GDP</th>
+      <th>Deaths</th>
+      <th>Births</th>
+      <th>Life</th>
+      <th>Disability</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>Afghanistan</td>
+      <td>2002</td>
+      <td>3.69</td>
+      <td>1189.784668</td>
+      <td>229450</td>
+      <td>980458.0</td>
+      <td>56.784</td>
+      <td>78088.270828</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>Afghanistan</td>
+      <td>2003</td>
+      <td>3.67</td>
+      <td>1235.810059</td>
+      <td>240215</td>
+      <td>1063246.0</td>
+      <td>57.271</td>
+      <td>75103.762176</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>Afghanistan</td>
+      <td>2004</td>
+      <td>3.61</td>
+      <td>1200.277954</td>
+      <td>243367</td>
+      <td>1097160.0</td>
+      <td>57.772</td>
+      <td>73137.361976</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3</td>
+      <td>Afghanistan</td>
+      <td>2005</td>
+      <td>3.53</td>
+      <td>1286.793701</td>
+      <td>241454</td>
+      <td>1099366.0</td>
+      <td>58.290</td>
+      <td>71629.722924</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4</td>
+      <td>Afghanistan</td>
+      <td>2006</td>
+      <td>3.50</td>
+      <td>1315.789062</td>
+      <td>246037</td>
+      <td>1136774.0</td>
+      <td>58.826</td>
+      <td>70807.147852</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="3">
+<div class="cell-output cell-output-display" data-execution_count="22">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Year</th>
+      <th>Natural_growth_rate</th>
+      <th>GDP</th>
+      <th>Deaths</th>
+      <th>Births</th>
+      <th>Life</th>
+      <th>Disability</th>
+      <th>Entity_Afghanistan</th>
+      <th>Entity_Albania</th>
+      <th>Entity_Algeria</th>
+      <th>...</th>
+      <th>Entity_United Arab Emirates</th>
+      <th>Entity_United Kingdom</th>
+      <th>Entity_United States</th>
+      <th>Entity_Uruguay</th>
+      <th>Entity_Uzbekistan</th>
+      <th>Entity_Vanuatu</th>
+      <th>Entity_Vietnam</th>
+      <th>Entity_World</th>
+      <th>Entity_Zambia</th>
+      <th>Entity_Zimbabwe</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2002</td>
+      <td>3.69</td>
+      <td>1189.784668</td>
+      <td>229450</td>
+      <td>980458.0</td>
+      <td>56.784</td>
+      <td>78088.270828</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2003</td>
+      <td>3.67</td>
+      <td>1235.810059</td>
+      <td>240215</td>
+      <td>1063246.0</td>
+      <td>57.271</td>
+      <td>75103.762176</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2004</td>
+      <td>3.61</td>
+      <td>1200.277954</td>
+      <td>243367</td>
+      <td>1097160.0</td>
+      <td>57.772</td>
+      <td>73137.361976</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2005</td>
+      <td>3.53</td>
+      <td>1286.793701</td>
+      <td>241454</td>
+      <td>1099366.0</td>
+      <td>58.290</td>
+      <td>71629.722924</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2006</td>
+      <td>3.50</td>
+      <td>1315.789062</td>
+      <td>246037</td>
+      <td>1136774.0</td>
+      <td>58.826</td>
+      <td>70807.147852</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 194 columns</p>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="5">
+<div class="cell-output cell-output-stdout">
+<pre><code>(4310, 193)
+(1078, 193)
+(4310,)
+(1078,)
+ 2.0    1437
+ 1.0    1320
+ 3.0    1269
+ 0.0    1257
+-1.0      67
+ 4.0      37
+-6.0       1
+Name: Natural_growth_rate, dtype: int64</code></pre>
+</div>
+</div>
+</section>
+<section id="svm-with-linear-kernels" class="level1">
+<h1>SVM with Linear kernels</h1>
+<div class="cell" data-execution_count="9">
+<div class="cell-output cell-output-display" data-execution_count="28">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>precision</th>
+      <th>recall</th>
+      <th>f1-score</th>
+      <th>support</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>-1.0</th>
+      <td>0.722222</td>
+      <td>0.866667</td>
+      <td>0.787879</td>
+      <td>15.000000</td>
+    </tr>
+    <tr>
+      <th>-0.0</th>
+      <td>0.961538</td>
+      <td>0.957447</td>
+      <td>0.959488</td>
+      <td>235.000000</td>
+    </tr>
+    <tr>
+      <th>1.0</th>
+      <td>0.950943</td>
+      <td>0.933333</td>
+      <td>0.942056</td>
+      <td>270.000000</td>
+    </tr>
+    <tr>
+      <th>2.0</th>
+      <td>0.900990</td>
+      <td>0.919192</td>
+      <td>0.910000</td>
+      <td>297.000000</td>
+    </tr>
+    <tr>
+      <th>3.0</th>
+      <td>0.936508</td>
+      <td>0.929134</td>
+      <td>0.932806</td>
+      <td>254.000000</td>
+    </tr>
+    <tr>
+      <th>4.0</th>
+      <td>1.000000</td>
+      <td>0.857143</td>
+      <td>0.923077</td>
+      <td>7.000000</td>
+    </tr>
+    <tr>
+      <th>accuracy</th>
+      <td>0.932282</td>
+      <td>0.932282</td>
+      <td>0.932282</td>
+      <td>0.932282</td>
+    </tr>
+    <tr>
+      <th>macro avg</th>
+      <td>0.912034</td>
+      <td>0.910486</td>
+      <td>0.909218</td>
+      <td>1078.000000</td>
+    </tr>
+    <tr>
+      <th>weighted avg</th>
+      <td>0.933225</td>
+      <td>0.932282</td>
+      <td>0.932576</td>
+      <td>1078.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="10">
+<div class="cell-output cell-output-display" data-execution_count="29">
+<pre><code>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x1b161c74f10&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="svm_files/figure-html/cell-11-output-2.png" width="522" height="429"></p>
+</div>
+</div>
+</section>
+<section id="svm-with-polynomial-kernels" class="level1">
+<h1>SVM with Polynomial kernels</h1>
+<div class="cell" data-execution_count="12">
+<div class="cell-output cell-output-display" data-execution_count="31">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>precision</th>
+      <th>recall</th>
+      <th>f1-score</th>
+      <th>support</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>-1.0</th>
+      <td>0.714286</td>
+      <td>0.333333</td>
+      <td>0.454545</td>
+      <td>15.000000</td>
+    </tr>
+    <tr>
+      <th>-0.0</th>
+      <td>0.905983</td>
+      <td>0.902128</td>
+      <td>0.904051</td>
+      <td>235.000000</td>
+    </tr>
+    <tr>
+      <th>1.0</th>
+      <td>0.741497</td>
+      <td>0.807407</td>
+      <td>0.773050</td>
+      <td>270.000000</td>
+    </tr>
+    <tr>
+      <th>2.0</th>
+      <td>0.704545</td>
+      <td>0.730640</td>
+      <td>0.717355</td>
+      <td>297.000000</td>
+    </tr>
+    <tr>
+      <th>3.0</th>
+      <td>0.881579</td>
+      <td>0.791339</td>
+      <td>0.834025</td>
+      <td>254.000000</td>
+    </tr>
+    <tr>
+      <th>4.0</th>
+      <td>0.857143</td>
+      <td>0.857143</td>
+      <td>0.857143</td>
+      <td>7.000000</td>
+    </tr>
+    <tr>
+      <th>accuracy</th>
+      <td>0.796846</td>
+      <td>0.796846</td>
+      <td>0.796846</td>
+      <td>0.796846</td>
+    </tr>
+    <tr>
+      <th>macro avg</th>
+      <td>0.800839</td>
+      <td>0.736998</td>
+      <td>0.756695</td>
+      <td>1078.000000</td>
+    </tr>
+    <tr>
+      <th>weighted avg</th>
+      <td>0.800552</td>
+      <td>0.796846</td>
+      <td>0.796744</td>
+      <td>1078.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="13">
+<div class="cell-output cell-output-display" data-execution_count="32">
+<pre><code>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x1b162d65090&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="svm_files/figure-html/cell-14-output-2.png" width="522" height="429"></p>
+</div>
+</div>
+</section>
+<section id="svm-with-rbf-kernels" class="level1">
+<h1>SVM with RBF kernels</h1>
+<div class="cell" data-execution_count="15">
+<div class="cell-output cell-output-display" data-execution_count="34">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>precision</th>
+      <th>recall</th>
+      <th>f1-score</th>
+      <th>support</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>-1.0</th>
+      <td>0.600000</td>
+      <td>0.200000</td>
+      <td>0.300000</td>
+      <td>15.000000</td>
+    </tr>
+    <tr>
+      <th>-0.0</th>
+      <td>0.898305</td>
+      <td>0.902128</td>
+      <td>0.900212</td>
+      <td>235.000000</td>
+    </tr>
+    <tr>
+      <th>1.0</th>
+      <td>0.746575</td>
+      <td>0.807407</td>
+      <td>0.775801</td>
+      <td>270.000000</td>
+    </tr>
+    <tr>
+      <th>2.0</th>
+      <td>0.703226</td>
+      <td>0.734007</td>
+      <td>0.718287</td>
+      <td>297.000000</td>
+    </tr>
+    <tr>
+      <th>3.0</th>
+      <td>0.881579</td>
+      <td>0.791339</td>
+      <td>0.834025</td>
+      <td>254.000000</td>
+    </tr>
+    <tr>
+      <th>4.0</th>
+      <td>0.857143</td>
+      <td>0.857143</td>
+      <td>0.857143</td>
+      <td>7.000000</td>
+    </tr>
+    <tr>
+      <th>accuracy</th>
+      <td>0.795918</td>
+      <td>0.795918</td>
+      <td>0.795918</td>
+      <td>0.795918</td>
+    </tr>
+    <tr>
+      <th>macro avg</th>
+      <td>0.781138</td>
+      <td>0.715337</td>
+      <td>0.730911</td>
+      <td>1078.000000</td>
+    </tr>
+    <tr>
+      <th>weighted avg</th>
+      <td>0.798197</td>
+      <td>0.795918</td>
+      <td>0.794703</td>
+      <td>1078.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="16">
+<div class="cell-output cell-output-display" data-execution_count="35">
+<pre><code>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x1b162d64460&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="svm_files/figure-html/cell-17-output-2.png" width="522" height="429"></p>
+</div>
+</div>
+</section>
+<section id="svm-with-sigmoid-kernels" class="level1">
+<h1>SVM with Sigmoid kernels</h1>
+<div class="cell" data-execution_count="18">
+<div class="cell-output cell-output-display" data-execution_count="37">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>precision</th>
+      <th>recall</th>
+      <th>f1-score</th>
+      <th>support</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>-1.0</th>
+      <td>0.600000</td>
+      <td>0.200000</td>
+      <td>0.300000</td>
+      <td>15.000000</td>
+    </tr>
+    <tr>
+      <th>-0.0</th>
+      <td>0.898305</td>
+      <td>0.902128</td>
+      <td>0.900212</td>
+      <td>235.000000</td>
+    </tr>
+    <tr>
+      <th>1.0</th>
+      <td>0.754325</td>
+      <td>0.807407</td>
+      <td>0.779964</td>
+      <td>270.000000</td>
+    </tr>
+    <tr>
+      <th>2.0</th>
+      <td>0.706070</td>
+      <td>0.744108</td>
+      <td>0.724590</td>
+      <td>297.000000</td>
+    </tr>
+    <tr>
+      <th>3.0</th>
+      <td>0.881579</td>
+      <td>0.791339</td>
+      <td>0.834025</td>
+      <td>254.000000</td>
+    </tr>
+    <tr>
+      <th>4.0</th>
+      <td>0.857143</td>
+      <td>0.857143</td>
+      <td>0.857143</td>
+      <td>7.000000</td>
+    </tr>
+    <tr>
+      <th>accuracy</th>
+      <td>0.798701</td>
+      <td>0.798701</td>
+      <td>0.798701</td>
+      <td>0.798701</td>
+    </tr>
+    <tr>
+      <th>macro avg</th>
+      <td>0.782904</td>
+      <td>0.717021</td>
+      <td>0.732656</td>
+      <td>1078.000000</td>
+    </tr>
+    <tr>
+      <th>weighted avg</th>
+      <td>0.800922</td>
+      <td>0.798701</td>
+      <td>0.797482</td>
+      <td>1078.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="19">
+<div class="cell-output cell-output-display" data-execution_count="38">
+<pre><code>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x1b162d64bb0&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="svm_files/figure-html/cell-20-output-2.png" width="522" height="429"></p>
+</div>
+</div>
+</section>
+<section id="conclusion" class="level1">
+<h1>conclusion</h1>
+<p>From all the plot and the matrix above, we can see SVM with Linear kernels has the highest accuracy around 0.92. However for the negative natural bith rate -1 the accuracy is only about 0.7</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

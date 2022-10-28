@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.251">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>decision tree</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="decision_tree_files/libs/clipboard/clipboard.min.js"></script>
+<script src="decision_tree_files/libs/quarto-html/quarto.js"></script>
+<script src="decision_tree_files/libs/quarto-html/popper.min.js"></script>
+<script src="decision_tree_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="decision_tree_files/libs/quarto-html/anchor.min.js"></script>
+<link href="decision_tree_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="decision_tree_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="decision_tree_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="decision_tree_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="decision_tree_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Contents</h2>
+   
+  <ul>
+  <li><a href="#using-decision-tree-to-my-data" id="toc-using-decision-tree-to-my-data" class="nav-link active" data-scroll-target="#using-decision-tree-to-my-data">using decision tree to my data</a></li>
+  <li><a href="#train-optimal-model" id="toc-train-optimal-model" class="nav-link" data-scroll-target="#train-optimal-model">Train optimal model</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">conclusion</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">decision tree</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<section id="using-decision-tree-to-my-data" class="level1">
+<h1>using decision tree to my data</h1>
+<p>I am using decision tree to classifer and preidct the natural population growth rate. In the dataframe, you can see I collect the gdp, year, country, death rate, birth rate, Life expectancy and DALYs (Disability-Adjusted Life Years). decision used to analyze data for classification and regression analysis. I can tell which factor causes the natural growth rate. After I Re-train the decision tree using the optimal hyper-parameter 18, I achieved an accuracy of 93%, which indicates that my model predicted the natural population growth rate can be an accurate rate of 93%.</p>
+<div class="cell" data-execution_count="2">
+<div class="cell-output cell-output-display" data-execution_count="38">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Year</th>
+      <th>Natural_growth_rate</th>
+      <th>GDP</th>
+      <th>Deaths</th>
+      <th>Births</th>
+      <th>Life</th>
+      <th>Disability</th>
+      <th>Entity_Afghanistan</th>
+      <th>Entity_Albania</th>
+      <th>Entity_Algeria</th>
+      <th>...</th>
+      <th>Entity_United Arab Emirates</th>
+      <th>Entity_United Kingdom</th>
+      <th>Entity_United States</th>
+      <th>Entity_Uruguay</th>
+      <th>Entity_Uzbekistan</th>
+      <th>Entity_Vanuatu</th>
+      <th>Entity_Vietnam</th>
+      <th>Entity_World</th>
+      <th>Entity_Zambia</th>
+      <th>Entity_Zimbabwe</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2002</td>
+      <td>3.69</td>
+      <td>1189.784668</td>
+      <td>229450</td>
+      <td>980458.0</td>
+      <td>56.784</td>
+      <td>78088.270828</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2003</td>
+      <td>3.67</td>
+      <td>1235.810059</td>
+      <td>240215</td>
+      <td>1063246.0</td>
+      <td>57.271</td>
+      <td>75103.762176</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2004</td>
+      <td>3.61</td>
+      <td>1200.277954</td>
+      <td>243367</td>
+      <td>1097160.0</td>
+      <td>57.772</td>
+      <td>73137.361976</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2005</td>
+      <td>3.53</td>
+      <td>1286.793701</td>
+      <td>241454</td>
+      <td>1099366.0</td>
+      <td>58.290</td>
+      <td>71629.722924</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2006</td>
+      <td>3.50</td>
+      <td>1315.789062</td>
+      <td>246037</td>
+      <td>1136774.0</td>
+      <td>58.826</td>
+      <td>70807.147852</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 194 columns</p>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="4">
+<div class="cell-output cell-output-stdout">
+<pre><code>(4310, 193)
+(1078, 193)
+(4310,)
+(1078,)
+ 2.0    1437
+ 1.0    1320
+ 3.0    1269
+ 0.0    1257
+-1.0      67
+ 4.0      37
+-6.0       1
+Name: Natural_growth_rate, dtype: int64</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="7">
+<div class="cell-output cell-output-stdout">
+<pre><code>------TEST------</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="43">
+<pre><code>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x25499ab6e30&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="decision_tree_files/figure-html/cell-8-output-3.png" width="522" height="429"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="8">
+<div class="cell-output cell-output-display" data-execution_count="44">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>precision</th>
+      <th>recall</th>
+      <th>f1-score</th>
+      <th>support</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>-1.0</th>
+      <td>0.846154</td>
+      <td>0.916667</td>
+      <td>0.880000</td>
+      <td>12.000000</td>
+    </tr>
+    <tr>
+      <th>-0.0</th>
+      <td>0.962810</td>
+      <td>0.962810</td>
+      <td>0.962810</td>
+      <td>242.000000</td>
+    </tr>
+    <tr>
+      <th>1.0</th>
+      <td>0.919540</td>
+      <td>0.919540</td>
+      <td>0.919540</td>
+      <td>261.000000</td>
+    </tr>
+    <tr>
+      <th>2.0</th>
+      <td>0.897260</td>
+      <td>0.897260</td>
+      <td>0.897260</td>
+      <td>292.000000</td>
+    </tr>
+    <tr>
+      <th>3.0</th>
+      <td>0.929412</td>
+      <td>0.911538</td>
+      <td>0.920388</td>
+      <td>260.000000</td>
+    </tr>
+    <tr>
+      <th>4.0</th>
+      <td>0.733333</td>
+      <td>1.000000</td>
+      <td>0.846154</td>
+      <td>11.000000</td>
+    </tr>
+    <tr>
+      <th>accuracy</th>
+      <td>0.922078</td>
+      <td>0.922078</td>
+      <td>0.922078</td>
+      <td>0.922078</td>
+    </tr>
+    <tr>
+      <th>macro avg</th>
+      <td>0.881418</td>
+      <td>0.934636</td>
+      <td>0.904359</td>
+      <td>1078.000000</td>
+    </tr>
+    <tr>
+      <th>weighted avg</th>
+      <td>0.922883</td>
+      <td>0.922078</td>
+      <td>0.922234</td>
+      <td>1078.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="9">
+<div class="cell-output cell-output-display">
+<p><img src="decision_tree_files/figure-html/cell-10-output-1.png" width="1886" height="1498"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="11">
+<div class="cell-output cell-output-display">
+<p><img src="decision_tree_files/figure-html/cell-12-output-1.png" width="589" height="429"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="decision_tree_files/figure-html/cell-12-output-2.png" width="589" height="429"></p>
+</div>
+</div>
+</section>
+<section id="train-optimal-model" class="level1">
+<h1>Train optimal model</h1>
+<p>Re-train the decision tree using the optimal hyper-parameter obtained from the plot above</p>
+<div class="cell" data-execution_count="12">
+<div class="cell-output cell-output-display">
+<p><img src="decision_tree_files/figure-html/cell-13-output-1.png" width="1886" height="1498"></p>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="48">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>precision</th>
+      <th>recall</th>
+      <th>f1-score</th>
+      <th>support</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>-1.0</th>
+      <td>1.000000</td>
+      <td>0.916667</td>
+      <td>0.956522</td>
+      <td>12.00000</td>
+    </tr>
+    <tr>
+      <th>-0.0</th>
+      <td>0.946939</td>
+      <td>0.958678</td>
+      <td>0.952772</td>
+      <td>242.00000</td>
+    </tr>
+    <tr>
+      <th>1.0</th>
+      <td>0.928571</td>
+      <td>0.896552</td>
+      <td>0.912281</td>
+      <td>261.00000</td>
+    </tr>
+    <tr>
+      <th>2.0</th>
+      <td>0.887417</td>
+      <td>0.917808</td>
+      <td>0.902357</td>
+      <td>292.00000</td>
+    </tr>
+    <tr>
+      <th>3.0</th>
+      <td>0.936759</td>
+      <td>0.911538</td>
+      <td>0.923977</td>
+      <td>260.00000</td>
+    </tr>
+    <tr>
+      <th>4.0</th>
+      <td>0.733333</td>
+      <td>1.000000</td>
+      <td>0.846154</td>
+      <td>11.00000</td>
+    </tr>
+    <tr>
+      <th>accuracy</th>
+      <td>0.921150</td>
+      <td>0.921150</td>
+      <td>0.921150</td>
+      <td>0.92115</td>
+    </tr>
+    <tr>
+      <th>macro avg</th>
+      <td>0.905503</td>
+      <td>0.933540</td>
+      <td>0.915677</td>
+      <td>1078.00000</td>
+    </tr>
+    <tr>
+      <th>weighted avg</th>
+      <td>0.922325</td>
+      <td>0.921150</td>
+      <td>0.921321</td>
+      <td>1078.00000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="conclusion" class="level1">
+<h1>conclusion</h1>
+<p>After I Re-train the decision tree using the optimal hyper-parameter 18, I achieved an accuracy of 93%, which indicates that My model can predict the natural population growth rate with an accuracy of 93%.</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
