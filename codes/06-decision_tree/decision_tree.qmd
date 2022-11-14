@@ -5,11 +5,11 @@ format:
   html:
     theme: yeti
     toc: true
-    code-fold: false
+    code-fold: true
     toc-title: Contents
     css: styles.css
 execute:
-  echo: false
+  echo: true
 jupyter: python3
 ---
 

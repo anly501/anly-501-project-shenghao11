@@ -1,16 +1,17 @@
 ---
+jupyter: python3
 pdf-engine: lualatex
 title: SVM
 format:
   html:
     theme: yeti
     toc: true
-    code-fold: false
+    code-fold: true
     toc-title: Contents
     css: styles.css
 execute:
-  echo: false
-jupyter: python3
+  echo: true
+
 ---
 
 # using svm to my data

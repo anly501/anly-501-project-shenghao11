@@ -1,0 +1,168 @@
+---
+pdf-engine: lualatex
+title: clustering
+format:
+  html:
+    theme: yeti
+    toc: true
+    code-fold: true
+    toc-title: Contents
+    css: styles.css
+execute:
+  echo: true
+jupyter: python3
+---
+
+# Introduction:
+I am using clustering trying to find the the relationship between my data. Clustirng is an unsupervised machine learning task. The feature data x includs Entity, Year, GDP, Deaths, Births, Life expectancy and DALYs (Disability-Adjusted Life Years).I am tring to find the relationship between the x feature. 
+
+```{python}
+
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import KMeans
+from scipy.spatial.distance import cdist
+from sklearn.cluster import DBSCAN
+from scipy.cluster.hierarchy import dendrogram, linkage
+from sklearn.cluster import AgglomerativeClustering
+```
+
+```{python}
+#clean the data
+population = pd.read_csv('../../data/01-modified-data/cleaned-population-py.csv')
+population = population.drop(columns=['Unnamed: 0'])
+# Replace categorical values with category codes by using the cat.codes function
+population['Entity']=population['Entity'].astype('category').cat.codes
+population.head()
+```
+
+```{python}
+population['label']=np.round(population['Natural_growth_rate'])
+population=population.drop('Natural_growth_rate', axis=1)
+
+print(population['label'].unique())
+sns.countplot(population['label'])
+print(len(population['label']))
+# drop unique value 
+population=population.loc[population['label']!=-6,:]
+print(len(population['label']))
+
+```
+
+```{python}
+# Split the dataset in X and y. since this is unsupervised learning, we will not use the y labels. you can 
+y = population['label']
+x = population.drop('label', axis=1)
+```
+
+```{python}
+#choose to normalize the X data by using the StandardScaler function.
+
+scalar=StandardScaler()
+scalar.fit(x)
+x=scalar.transform(x)
+```
+
+## Perform K-means
+The purpose of k-means clustering is to divide n observations into k clusters, each belonging to the cluster with the closest mean, as the prototype of that cluster.
+I am using elbow method to find the optimal number of the clusters.
+
+```{python}
+# for k means clustering we will use the elbow method to find the optimal number of clusters.
+distortions=[]
+inertias=[]
+k=11
+OMP_NUM_THREADS=2
+for k in range(1,k):
+    kmeanModel = KMeans(n_clusters=k,init = 'k-means++',random_state=42)
+    kmeanModel.fit(x)
+
+    distortions.append(sum(np.min(cdist(x,kmeanModel.cluster_centers_,'euclidean'),axis=1))/x.shape[0])
+
+    inertias.append(kmeanModel.inertia_)
+    evaluation=pd.DataFrame.from_records({'Cluster':np.arange(1,k+1),'Distortion':distortions,'Inertia':inertias})
+evaluation
+```
+
+```{python}
+evaluation.plot.line(x='Cluster',subplots=True)
+```
+
+```{python}
+bestK = KMeans(n_clusters=4,init='k-means++',random_state=42)
+labels4 = bestK.fit_predict(x)
+population['nlabels']=labels4
+sns.scatterplot(x='Life',y = 'GDP',hue='nlabels',data=population)
+
+```
+```{python}
+
+sns.scatterplot(x='label',y = 'Life',hue='nlabels',data=population)
+
+```
+
+
+From the plot above, we can find the best k is 4. 
+  Life expectancy and GDP are roughly positively correlated
+
+## Perform DBSCAN and predict the labels
+DBSAN clustering can find the clusters with noise. It represents density-based spatial clustering.
+
+```{python}
+# perform DBSCAN clustering. use the eps and min_samples parameters to find the optimal number of clusters. plot the number of clusters vs the silhouette score. Suggest the optimal number of clusters based on the plot.
+model= DBSCAN(eps=2.5, min_samples=2).fit(x)
+labels_DB=model.labels_
+```
+
+## Hierarchical clustering
+Hierarchical clustering is a tree based clustring. 
+
+```{python}
+# Perform Agglomerative Clustering
+model = AgglomerativeClustering().fit(x)
+labels = model.labels_
+```
+
+```{python}
+# create linkage for agglomerative clustering, and the dendrogram for the linkage. Suggest the optimal number of clusters based on the dendrogram.
+Z=linkage(x,method='ward')
+dend=dendrogram(Z)
+```
+
+## Mean Shift
+
+```{python}
+# Perform MeanShift Clustering and predict number 
+from sklearn.cluster import MeanShift, estimate_bandwidth
+from itertools import cycle
+
+model = MeanShift(bandwidth=2).fit(x)
+labels = model.labels_
+cluster_centers = model.cluster_centers_
+labels_unqiue = np.unique(labels)
+n_clusters_ = len(labels_unqiue)
+print("number of estimated clusters: %d" % n_clusters_)
+```
+
+## Birch
+
+```{python}
+# perform birc clustering and predict number of clusters
+from sklearn.cluster import Birch
+x=np.ascontiguousarray(x)
+brc = Birch(n_clusters = 4).fit(x)
+labels_brc=brc.predict(x)
+labels_brc
+```
+
+
+# Results
+Compare these method, the bset is k mean clusterng. the best k for the k mean clustering is 4. There are some feature in the X have relationship. For the y, there are 6 labels, however fro the clustering the best is 4 labels.
+
+
+# Conclusions
+GDP and Life expectancy seem to have some effect on the natural birth rate.
