@@ -1,0 +1,172 @@
+---
+jupyter: python3
+pdf-engine: lualatex
+title: SVM
+format:
+  html:
+    theme: yeti
+    toc: true
+    code-fold: true
+    toc-title: Contents
+    css: styles.css
+execute:
+  echo: true
+
+---
+
+# using svm to my data
+I am using support vector machines(svm) to classifer and preidct the natural population growth rate. In the dataframe, you can see I collect the gdp, year, country, death rate, birth rate, Life expectancy and DALYs (Disability-Adjusted Life Years).  SVM used to analyze data for classification and regression analysis. I can tell which factor causes the natural growth rate.
+After I cleaned up the data and used SVM with Linear kernels, I achieved an accuracy of 92%, which indicates thatMy model can predict the natural population growth rate with an accuracy of 92%. But the accuracy for negative growth rates is only around 70%.
+
+
+
+# clean data
+```{python}
+#LOAD RELEVANT PACKAGES
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+from sklearn.model_selection import train_test_split
+from sklearn.svm import SVC
+from sklearn.metrics import classification_report, confusion_matrix
+```
+
+```{python}
+population = pd.read_csv('../../data/01-modified-data/cleaned-population-py.csv')
+population.head()
+```
+
+```{python}
+population = population.drop(columns=['Unnamed: 0'])
+population = pd.get_dummies(population,columns=['Entity'])
+population.head()
+```
+
+```{python}
+#y = population['Natural_growth_rate'].apply(lambda x:1 if x>0  else 0)
+y = np.round(population['Natural_growth_rate'])
+
+X=population.loc[:,population.columns !='Natural_growth_rate']
+X=(X-np.mean(X,axis=0))/np.std(X,axis=0)
+X_train,X_test,y_train,y_test = train_test_split(X,y,test_size=0.2)
+```
+
+```{python}
+print(X_train.shape)
+print(X_test.shape)
+print(y_train.shape)
+print(y_test.shape)
+print(y.value_counts())
+```
+
+# SVM with Linear kernels
+
+```{python}
+# Import svc from sklearn.svm and classsification_report, confusion_matrix from sklearn.metrics.
+# Fit the classfier on the training data and predict on the test data. Set the classifier to be linear and C between 0.35-0.75. 
+svc = SVC(kernel ='linear', C = 0.75).fit(X_train, y_train)
+yp_test = svc.predict(X_test)
+```
+
+```{python}
+# Calculate the confusion matrix and classification report for the train and test data. 
+matrix = confusion_matrix(y_test,yp_test)
+report = classification_report(y_test, yp_test,output_dict=True)
+```
+
+```{python}
+# Save the results in a data frame. 
+report = pd.DataFrame(report).transpose()
+```
+
+```{python}
+# display the results data frame
+report
+```
+
+```{python}
+# Display Confusion Matrix for the test data. Remember to use the ConfusionMatrixDisplay function.
+#ConfusionMatrixDisplay(matrix).plot()
+ConfusionMatrixDisplay.from_predictions(y_test, yp_test)
+```
+
+# SVM with Polynomial kernels
+
+```{python}
+# Import svc from sklearn.svm and classsification_report, confusion_matrix from sklearn.metrics.
+# Fit the classfier on the training data and predict on the test data. Set the classifier to be polynomial, C between 0.35-0.75, and degree = 2. 
+svc = SVC(kernel ='poly', C = 0.75, degree=2).fit(X_train, y_train)
+yp_test = svc.predict(X_test)
+```
+
+```{python}
+# Calculate the confusion matrix and classification report for the train and test data. 
+matrix = confusion_matrix(y_test,yp_test)
+report = classification_report(y_test, yp_test,output_dict=True)
+# Save the results in a data frame.
+report = pd.DataFrame(report).transpose()
+# display the results data frame
+report
+```
+
+```{python}
+# Display Confusion Matrix for the test data. Remember to use the ConfusionMatrixDisplay function.
+#ConfusionMatrixDisplay(matrix).plot()
+ConfusionMatrixDisplay.from_predictions(y_test, yp_test)
+```
+
+# SVM with RBF kernels
+
+```{python}
+# Import svc from sklearn.svm and classsification_report, confusion_matrix from sklearn.metrics.
+# Fit the classfier on the training data and predict on the test data. Set the classifier to be linear and C between 0.35-0.75. 
+svc = SVC(kernel ='rbf', C = 0.75).fit(X_train, y_train)
+yp_test = svc.predict(X_test)
+```
+
+```{python}
+# Calculate the confusion matrix and classification report for the train and test data. 
+matrix = confusion_matrix(y_test,yp_test)
+report = classification_report(y_test, yp_test,output_dict=True)
+# Save the results in a data frame.
+report = pd.DataFrame(report).transpose()
+# display the results data frame
+report
+```
+
+```{python}
+# Display Confusion Matrix for the test data. Remember to use the ConfusionMatrixDisplay function.
+#ConfusionMatrixDisplay(matrix).plot()
+ConfusionMatrixDisplay.from_predictions(y_test, yp_test)
+```
+
+# SVM with Sigmoid kernels
+
+```{python}
+# Import svc from sklearn.svm and classsification_report, confusion_matrix from sklearn.metrics.
+# Fit the classfier on the training data and predict on the test data. Set the classifier to be linear and C between 0.35-0.75. 
+svc = SVC(kernel ='sigmoid', C = 0.75).fit(X_train, y_train)
+yp_test = svc.predict(X_test)
+```
+
+```{python}
+# Calculate the confusion matrix and classification report for the train and test data. 
+matrix = confusion_matrix(y_test,yp_test)
+report = classification_report(y_test, yp_test,output_dict=True)
+# Save the results in a data frame.
+report = pd.DataFrame(report).transpose()
+# display the results data frame
+report
+```
+
+```{python}
+# Display Confusion Matrix for the test data. Remember to use the ConfusionMatrixDisplay function.
+#ConfusionMatrixDisplay(matrix).plot()
+ConfusionMatrixDisplay.from_predictions(y_test, yp_test)
+```
+
+# conclusion
+From all the plot and the matrix above, we can see  SVM with Linear kernels has the highest accuracy around 0.92. However for the negative natural bith rate -1 the accuracy is only about 0.7
+
