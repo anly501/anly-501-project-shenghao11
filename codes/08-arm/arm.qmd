@@ -1,0 +1,274 @@
+---
+pdf-engine: lualatex
+title: arm
+format:
+  html:
+    theme: yeti
+    toc: true
+    code-fold: true
+    toc-title: Contents
+    css: styles.css
+execute:
+  echo: true
+jupyter: python3
+---
+
+# Introduction:
+My database is a natural growth rate collected by the tweet api.I tried to find the correlation of high frequency words using the arm algorithm.I will trying to find the words relationship with the natural growth rate.
+
+# Theory:
+association rule mining(arm)  is one of machine learning althorigm that can be used to discover relationships between variables. Consider some transactions involving many items: item A appears in transaction 1, item B appears in transaction 2, and both items A and B appear in transaction 3. So, is there a pattern between the occurrences of items A and B in a transaction? In database knowledge discovery, association rules are knowledge patterns that describe this pattern of simultaneous occurrences between items in a transaction. More precisely, association rules describe how much the occurrence of item A affects the occurrence of item B by quantifying the numbers.
+Four parameters are generally used to describe the properties of an association rule:Confidence, Support, Expected confidence, Lift.
+
+# Methods:
+
+```{python}
+import nltk
+import string
+import json
+from sklearn.feature_extraction.text import CountVectorizer
+from nltk.stem import WordNetLemmatizer
+from nltk.stem import PorterStemmer
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+from nltk.sentiment import SentimentIntensityAnalyzer
+from nltk.downloader import download
+
+import os
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+from apyori import apriori
+import networkx as nx 
+```
+
+```{python}
+data = pd.read_json('../01-data-gathering/tmp-snapshot.json', lines=True)
+data.values[0][1]["text"]
+text=[]
+
+for i in range(1,np.shape(data)[1]):
+        text=[text,data.values[0][i]["text"]]
+
+text = ''.join(''.join(map(str, l)) for l in text)
+```
+
+## read and clean 
+
+```{python}
+#USER PARAM
+input			=	text
+compute_sentiment 	=	True		
+sentiment    		=	[]			#average sentiment of each chunck of text 
+ave_window_size		=	250			#size of scanning window for moving average
+					
+
+#OUTPUT FILE
+output='transactions.txt'
+if os.path.exists(output): os.remove(output)
+
+#INITIALIZE
+lemmatizer 	= 	WordNetLemmatizer()
+ps 			=	PorterStemmer()
+sia 		= 	SentimentIntensityAnalyzer()
+
+#ADD MORE
+stopwords	=	stopwords.words('english')
+add=['mr','mrs','wa','dr','said','back','could','one','looked','like','know','around','dont']
+for sp in add: stopwords.append(sp)
+def read_and_clean(path):
+	global sentiment 
+	global text 
+
+	#REMOVE HEADER, AND NEW LINES
+	text=text.replace("'",'') #wasn't --> wasnt
+
+	#-----------------------
+	#INSERT CODE TO ONLY KEEP CHAR IN string.printable
+	tmp='';printable = set(string.printable);
+	for char in text:
+		if(char in printable): tmp=tmp+char
+	text=tmp
+	#-----------------------
+
+	#BREAK INTO CHUNKS (SENTANCES OR OTHERWISE)
+	sentences=nltk.tokenize.sent_tokenize(text)  #SENTENCES
+
+	print("NUMBER OF SENTENCES FOUND:",len(sentences)); #print(sentences)
+
+	#CLEAN AND LEMMATIZE
+	keep='0123456789abcdefghijklmnopqrstuvwxy';
+
+	new_sentences=[]; vocabulary=[]
+	for sentence in sentences:
+		new_sentence=''
+
+		# REBUILD LEMITIZED SENTENCE
+		for word in sentence.split():
+			
+			#ONLY KEEP CHAR IN "keep"
+			tmp2=''
+			for char in word: 
+				if(char in keep): 
+					tmp2=tmp2+char
+				else:
+					tmp2=tmp2+' '
+			word=tmp2
+
+			#-----------------------
+			# INSERT CODE TO LEMMATIZE THE WORDS
+			new_word=lemmatizer.lemmatize(word)
+			#-----------------------
+
+			#REMOVE WHITE SPACES
+			new_word=new_word.replace(' ', '')
+
+			#BUILD NEW SENTANCE BACK UP
+			if( new_word not in stopwords):
+				if(new_sentence==''):
+					new_sentence=new_word
+				else:
+					new_sentence=new_sentence+','+new_word
+				if(new_word not in vocabulary): vocabulary.append(new_word)
+
+		#SAVE (LIST OF LISTS)		
+		new_sentences.append(new_sentence.split(","))
+		
+		#SIA
+		if(compute_sentiment):
+			#-----------------------
+			# INSERT CODE TO USE NLTK TO DO SENTIMENT ANALYSIS 
+			text1=new_sentence.replace(',',' ')
+			score=sia.polarity_scores(text1)
+			sentiment.append([score['neg'],score['neu'],score['pos'],score['compound']])
+			#-----------------------
+			
+		#SAVE SENTANCE TO OUTPUT FILE
+		if(len(new_sentence.split(','))>2):
+			f = open(output, "a")
+			f.write(new_sentence+"\n")
+			f.close()
+
+	sentiment=np.array(sentiment)
+	print("TOTAL AVERAGE SENTEMENT:",np.mean(sentiment,axis=0))
+	print("VOCAB LENGTH",len(vocabulary))
+	return new_sentences
+
+```
+
+```{python}
+transactions=read_and_clean(input)
+print(transactions[0:5])
+```
+
+## Re-format output
+
+```{python}
+# INSERT CODE TO RE-FORMAT THE APRIORI OUTPUT INTO A PANDAS DATA-FRAME WITH COLUMNS "rhs","lhs","supp","conf","supp x conf","lift"
+def reformat_results(results):
+    keep=[]
+    for i in range(0,len(results)):
+        for j in range(0,len(list(results[i]))):
+            if(j>1):
+                for k in range(0,len(list(results[i][j]))):
+                    rhs=list(results[i][j][k][0])
+                    lhs=list(results[i][j][k][1])
+                    conf=float(results[i][j][k][2])
+                    lift=float(results[i][j][k][3])
+                    keep.append([rhs,lhs,supp,conf,supp*conf,lift])
+            if(j==1):
+                supp=results[i][j]
+
+    return pd.DataFrame(keep,columns=["rhs","lhs","supp","conf","supp x conf","lift"])                            
+```
+
+## Utility function: Convert to NetworkX object
+
+```{python}
+def convert_to_network(df):
+    print(df)
+
+    #BUILD GRAPH
+    G = nx.DiGraph()  # DIRECTED
+    for row in df.iterrows():
+        # for column in df.columns:
+        lhs="_".join(row[1][0])
+        rhs="_".join(row[1][1])
+        conf=row[1][3]; #print(conf)
+        if(lhs not in G.nodes): 
+            G.add_node(lhs)
+        if(rhs not in G.nodes): 
+            G.add_node(rhs)
+
+        edge=(lhs,rhs)
+        if edge not in G.edges:
+            G.add_edge(lhs, rhs, weight=conf)
+
+    # print(G.nodes)
+    # print(G.edges)
+    return G
+```
+
+## Utility function: Plot NetworkX object
+
+```{python}
+def plot_network(G):
+    #SPECIFIY X-Y POSITIONS FOR PLOTTING
+    pos=nx.random_layout(G)
+
+    #GENERATE PLOT
+    fig, ax = plt.subplots()
+    fig.set_size_inches(15, 15)
+
+    #assign colors based on attributes
+    weights_e 	= [G[u][v]['weight'] for u,v in G.edges()]
+
+    #SAMPLE CMAP FOR COLORS 
+    cmap=plt.cm.get_cmap('Blues')
+    colors_e 	= [cmap(G[u][v]['weight']*10) for u,v in G.edges()]
+
+    #PLOT
+    nx.draw(
+    G,
+    edgecolors="black",
+    edge_color=colors_e,
+    node_size=2000,
+    linewidths=2,
+    font_size=8,
+    font_color="white",
+    font_weight="bold",
+    width=weights_e,
+    with_labels=True,
+    pos=pos,
+    ax=ax
+    )
+    ax.set(title='Dracula')
+    plt.show()
+```
+
+ ## Train ARM model
+
+```{python}
+# INSERT CODE TO TRAIN THE ARM MODEL USING THE "apriori" PACKAGE
+print("Transactions:", pd.DataFrame(transactions[:5]))
+results = list(apriori(transactions, min_support=0.3, min_confidence=0.5, min_length=2, max_length=10))     #RUN APRIORI ALGORITHM
+print(len(results[:5]))
+```
+
+##  Visualize the results
+
+```{python}
+# INSERT CODE TO PLOT THE RESULTS AS A NETWORK-X OBJECT 
+pd_results=reformat_results(results)
+G=convert_to_network(pd_results)
+plot_network(G)
+```
+
+## Results
+From the plot above, most of the words are about natural growth rates. Associated with these words are about the economic.
+
+# conclusion
+In this tab, I use arm to find the relationship of words in the txt database, I found the econimic may have impoartant realtionship with natural groth rate.
+
+
+

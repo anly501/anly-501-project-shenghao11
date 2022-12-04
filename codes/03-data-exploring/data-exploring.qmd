@@ -1,0 +1,52 @@
+---
+pdf-engine: lualatex
+title: data-exploring
+format:
+  html:
+    theme: yeti
+    toc: true
+    code-fold: true
+    toc-title: Contents
+    css: styles.css
+execute:
+  echo: true
+jupyter: python3
+---
+
+```{python}
+#%%
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+import matplotlib.dates as mdate
+from matplotlib.pyplot import rcParams 
+from PIL import Image 
+import PIL 
+```
+
+```{python}
+# natural population growth data
+population = pd.read_csv('../../data/01-modified-data/cleaned-population-py.csv')
+#normalize
+population['Natural_growth_rate'] = (population['Natural_growth_rate']-np.mean(population['Natural_growth_rate']))/np.std(population['Natural_growth_rate'])
+population['GDP'] = (population['GDP']-np.mean(population['GDP']))/np.std(population['GDP'])
+population['Deaths'] = (population['Deaths']-np.mean(population['Deaths']))/np.std(population['Deaths'])
+population['Births'] = (population['Births']-np.mean(population['Births']))/np.std(population['Births'])
+population['Life'] = (population['Life']-np.mean(population['Life']))/np.std(population['Life'])
+population['Disability'] = (population['Disability']-np.mean(population['Disability']))/np.std(population['Disability'])
+population = population.drop(columns=['Unnamed: 0'])
+population.head()
+```
+
+```{python}
+population.set_index('Year', inplace=True)
+```
+
+```{python}
+#population.groupby('Entity')['Natural_growth_rate'].plot(legend=True, figsize=(20, 5))
+population.groupby('Entity').plot(legend=True, figsize=(20, 5))
+#growth = pd.concat( [ gb.get_group(group) for i,group in enumerate( gb.groups) if i < 5 ] ).groupby('Entity')
+#growth.plot(legend=True, figsize=(20, 5))
+```
+
