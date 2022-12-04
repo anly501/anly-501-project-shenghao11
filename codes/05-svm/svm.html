@@ -101,7 +101,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
 
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../styles.css">
 </head>
 
 <body>
@@ -166,7 +166,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>population <span class="op">=</span> pd.read_csv(<span class="st">'../../data/01-modified-data/cleaned-population-py.csv'</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>population.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="21">
+<div class="cell-output cell-output-display" data-execution_count="2">
 
 <div>
 
@@ -258,7 +258,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>population <span class="op">=</span> pd.get_dummies(population,columns<span class="op">=</span>[<span class="st">'Entity'</span>])</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>population.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="22">
+<div class="cell-output cell-output-display" data-execution_count="3">
 
 <div>
 
@@ -484,7 +484,7 @@ Name: Natural_growth_rate, dtype: int64</code></pre>
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># display the results data frame</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>report</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="28">
+<div class="cell-output cell-output-display" data-execution_count="9">
 
 <div>
 
@@ -501,65 +501,65 @@ Name: Natural_growth_rate, dtype: int64</code></pre>
   <tbody>
     <tr>
       <th>-1.0</th>
-      <td>0.625000</td>
-      <td>0.833333</td>
-      <td>0.714286</td>
-      <td>12.000000</td>
+      <td>0.800000</td>
+      <td>0.923077</td>
+      <td>0.857143</td>
+      <td>13.000000</td>
     </tr>
     <tr>
       <th>0.0</th>
-      <td>0.989011</td>
-      <td>0.937500</td>
-      <td>0.962567</td>
-      <td>288.000000</td>
+      <td>0.976190</td>
+      <td>0.968504</td>
+      <td>0.972332</td>
+      <td>254.000000</td>
     </tr>
     <tr>
       <th>1.0</th>
-      <td>0.930909</td>
-      <td>0.934307</td>
-      <td>0.932605</td>
-      <td>274.000000</td>
+      <td>0.943396</td>
+      <td>0.943396</td>
+      <td>0.943396</td>
+      <td>265.000000</td>
     </tr>
     <tr>
       <th>2.0</th>
-      <td>0.874101</td>
-      <td>0.927481</td>
+      <td>0.925532</td>
       <td>0.900000</td>
-      <td>262.000000</td>
+      <td>0.912587</td>
+      <td>290.000000</td>
     </tr>
     <tr>
       <th>3.0</th>
-      <td>0.939655</td>
-      <td>0.923729</td>
-      <td>0.931624</td>
-      <td>236.000000</td>
+      <td>0.918288</td>
+      <td>0.963265</td>
+      <td>0.940239</td>
+      <td>245.000000</td>
     </tr>
     <tr>
       <th>4.0</th>
-      <td>0.750000</td>
-      <td>0.500000</td>
-      <td>0.600000</td>
-      <td>6.000000</td>
+      <td>1.000000</td>
+      <td>0.636364</td>
+      <td>0.777778</td>
+      <td>11.000000</td>
     </tr>
     <tr>
       <th>accuracy</th>
-      <td>0.927644</td>
-      <td>0.927644</td>
-      <td>0.927644</td>
-      <td>0.927644</td>
+      <td>0.938776</td>
+      <td>0.938776</td>
+      <td>0.938776</td>
+      <td>0.938776</td>
     </tr>
     <tr>
       <th>macro avg</th>
-      <td>0.851446</td>
-      <td>0.842725</td>
-      <td>0.840180</td>
+      <td>0.927234</td>
+      <td>0.889101</td>
+      <td>0.900579</td>
       <td>1078.000000</td>
     </tr>
     <tr>
       <th>weighted avg</th>
-      <td>0.930127</td>
-      <td>0.927644</td>
-      <td>0.928189</td>
+      <td>0.939459</td>
+      <td>0.938776</td>
+      <td>0.938478</td>
       <td>1078.000000</td>
     </tr>
   </tbody>
@@ -574,8 +574,8 @@ Name: Natural_growth_rate, dtype: int64</code></pre>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">#ConfusionMatrixDisplay(matrix).plot()</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>ConfusionMatrixDisplay.from_predictions(y_test, yp_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="29">
-<pre><code>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x1eba3f3d2d0&gt;</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<pre><code>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x28cd79d27a0&gt;</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <p><img src="svm_files/figure-html/cell-11-output-2.png" width="522" height="429"></p>
@@ -604,7 +604,7 @@ Name: Natural_growth_rate, dtype: int64</code></pre>
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co"># display the results data frame</span></span>
 <span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>report</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="31">
+<div class="cell-output cell-output-display" data-execution_count="12">
 
 <div>
 
@@ -621,65 +621,65 @@ Name: Natural_growth_rate, dtype: int64</code></pre>
   <tbody>
     <tr>
       <th>-1.0</th>
-      <td>0.473684</td>
-      <td>0.750000</td>
-      <td>0.580645</td>
-      <td>12.000000</td>
+      <td>0.777778</td>
+      <td>0.538462</td>
+      <td>0.636364</td>
+      <td>13.000000</td>
     </tr>
     <tr>
       <th>0.0</th>
-      <td>0.937984</td>
-      <td>0.840278</td>
-      <td>0.886447</td>
-      <td>288.000000</td>
+      <td>0.942149</td>
+      <td>0.897638</td>
+      <td>0.919355</td>
+      <td>254.000000</td>
     </tr>
     <tr>
       <th>1.0</th>
-      <td>0.735786</td>
-      <td>0.802920</td>
-      <td>0.767888</td>
-      <td>274.000000</td>
+      <td>0.719723</td>
+      <td>0.784906</td>
+      <td>0.750903</td>
+      <td>265.000000</td>
     </tr>
     <tr>
       <th>2.0</th>
-      <td>0.699659</td>
-      <td>0.782443</td>
-      <td>0.738739</td>
-      <td>262.000000</td>
+      <td>0.698582</td>
+      <td>0.679310</td>
+      <td>0.688811</td>
+      <td>290.000000</td>
     </tr>
     <tr>
       <th>3.0</th>
-      <td>0.911330</td>
-      <td>0.783898</td>
-      <td>0.842825</td>
-      <td>236.000000</td>
+      <td>0.842105</td>
+      <td>0.848980</td>
+      <td>0.845528</td>
+      <td>245.000000</td>
     </tr>
     <tr>
       <th>4.0</th>
-      <td>0.500000</td>
-      <td>0.500000</td>
-      <td>0.500000</td>
-      <td>6.000000</td>
+      <td>0.888889</td>
+      <td>0.727273</td>
+      <td>0.800000</td>
+      <td>11.000000</td>
     </tr>
     <tr>
       <th>accuracy</th>
-      <td>0.801484</td>
-      <td>0.801484</td>
-      <td>0.801484</td>
-      <td>0.801484</td>
+      <td>0.794063</td>
+      <td>0.794063</td>
+      <td>0.794063</td>
+      <td>0.794063</td>
     </tr>
     <tr>
       <th>macro avg</th>
-      <td>0.709741</td>
-      <td>0.743256</td>
-      <td>0.719424</td>
+      <td>0.811538</td>
+      <td>0.746095</td>
+      <td>0.773493</td>
       <td>1078.000000</td>
     </tr>
     <tr>
       <th>weighted avg</th>
-      <td>0.815226</td>
-      <td>0.801484</td>
-      <td>0.805308</td>
+      <td>0.796684</td>
+      <td>0.794063</td>
+      <td>0.794516</td>
       <td>1078.000000</td>
     </tr>
   </tbody>
@@ -694,8 +694,8 @@ Name: Natural_growth_rate, dtype: int64</code></pre>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co">#ConfusionMatrixDisplay(matrix).plot()</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>ConfusionMatrixDisplay.from_predictions(y_test, yp_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="32">
-<pre><code>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x1eba590ace0&gt;</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="13">
+<pre><code>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x28cfbba8460&gt;</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <p><img src="svm_files/figure-html/cell-14-output-2.png" width="522" height="429"></p>
@@ -724,7 +724,7 @@ Name: Natural_growth_rate, dtype: int64</code></pre>
 <span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co"># display the results data frame</span></span>
 <span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>report</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="34">
+<div class="cell-output cell-output-display" data-execution_count="15">
 
 <div>
 
@@ -741,65 +741,65 @@ Name: Natural_growth_rate, dtype: int64</code></pre>
   <tbody>
     <tr>
       <th>-1.0</th>
-      <td>0.473684</td>
-      <td>0.750000</td>
-      <td>0.580645</td>
-      <td>12.000000</td>
+      <td>0.777778</td>
+      <td>0.538462</td>
+      <td>0.636364</td>
+      <td>13.000000</td>
     </tr>
     <tr>
       <th>0.0</th>
-      <td>0.937984</td>
-      <td>0.840278</td>
-      <td>0.886447</td>
-      <td>288.000000</td>
+      <td>0.942387</td>
+      <td>0.901575</td>
+      <td>0.921529</td>
+      <td>254.000000</td>
     </tr>
     <tr>
       <th>1.0</th>
-      <td>0.746622</td>
-      <td>0.806569</td>
-      <td>0.775439</td>
-      <td>274.000000</td>
+      <td>0.722222</td>
+      <td>0.784906</td>
+      <td>0.752260</td>
+      <td>265.000000</td>
     </tr>
     <tr>
       <th>2.0</th>
-      <td>0.702703</td>
-      <td>0.793893</td>
-      <td>0.745520</td>
-      <td>262.000000</td>
+      <td>0.699647</td>
+      <td>0.682759</td>
+      <td>0.691099</td>
+      <td>290.000000</td>
     </tr>
     <tr>
       <th>3.0</th>
-      <td>0.911330</td>
-      <td>0.783898</td>
-      <td>0.842825</td>
-      <td>236.000000</td>
+      <td>0.845528</td>
+      <td>0.848980</td>
+      <td>0.847251</td>
+      <td>245.000000</td>
     </tr>
     <tr>
       <th>4.0</th>
-      <td>0.500000</td>
-      <td>0.500000</td>
-      <td>0.500000</td>
-      <td>6.000000</td>
+      <td>0.888889</td>
+      <td>0.727273</td>
+      <td>0.800000</td>
+      <td>11.000000</td>
     </tr>
     <tr>
       <th>accuracy</th>
-      <td>0.805195</td>
-      <td>0.805195</td>
-      <td>0.805195</td>
-      <td>0.805195</td>
+      <td>0.795918</td>
+      <td>0.795918</td>
+      <td>0.795918</td>
+      <td>0.795918</td>
     </tr>
     <tr>
       <th>macro avg</th>
-      <td>0.712054</td>
-      <td>0.745773</td>
-      <td>0.721812</td>
+      <td>0.812742</td>
+      <td>0.747325</td>
+      <td>0.774751</td>
       <td>1078.000000</td>
     </tr>
     <tr>
       <th>weighted avg</th>
-      <td>0.818720</td>
-      <td>0.805195</td>
-      <td>0.808875</td>
+      <td>0.798419</td>
+      <td>0.795918</td>
+      <td>0.796369</td>
       <td>1078.000000</td>
     </tr>
   </tbody>
@@ -814,8 +814,8 @@ Name: Natural_growth_rate, dtype: int64</code></pre>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co">#ConfusionMatrixDisplay(matrix).plot()</span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>ConfusionMatrixDisplay.from_predictions(y_test, yp_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="35">
-<pre><code>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x1eba45cb610&gt;</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="16">
+<pre><code>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x28cfbc6ca30&gt;</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <p><img src="svm_files/figure-html/cell-17-output-2.png" width="522" height="429"></p>
@@ -844,7 +844,7 @@ Name: Natural_growth_rate, dtype: int64</code></pre>
 <span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="co"># display the results data frame</span></span>
 <span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>report</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="37">
+<div class="cell-output cell-output-display" data-execution_count="18">
 
 <div>
 
@@ -861,66 +861,66 @@ Name: Natural_growth_rate, dtype: int64</code></pre>
   <tbody>
     <tr>
       <th>-1.0</th>
-      <td>0.473684</td>
-      <td>0.750000</td>
-      <td>0.580645</td>
-      <td>12.00000</td>
+      <td>0.777778</td>
+      <td>0.538462</td>
+      <td>0.636364</td>
+      <td>13.000000</td>
     </tr>
     <tr>
       <th>0.0</th>
-      <td>0.937984</td>
-      <td>0.840278</td>
-      <td>0.886447</td>
-      <td>288.00000</td>
+      <td>0.927419</td>
+      <td>0.905512</td>
+      <td>0.916335</td>
+      <td>254.000000</td>
     </tr>
     <tr>
       <th>1.0</th>
-      <td>0.750000</td>
-      <td>0.810219</td>
-      <td>0.778947</td>
-      <td>274.00000</td>
+      <td>0.720848</td>
+      <td>0.769811</td>
+      <td>0.744526</td>
+      <td>265.000000</td>
     </tr>
     <tr>
       <th>2.0</th>
-      <td>0.706081</td>
-      <td>0.797710</td>
-      <td>0.749104</td>
-      <td>262.00000</td>
+      <td>0.698582</td>
+      <td>0.679310</td>
+      <td>0.688811</td>
+      <td>290.000000</td>
     </tr>
     <tr>
       <th>3.0</th>
-      <td>0.911330</td>
-      <td>0.783898</td>
-      <td>0.842825</td>
-      <td>236.00000</td>
+      <td>0.842105</td>
+      <td>0.848980</td>
+      <td>0.845528</td>
+      <td>245.000000</td>
     </tr>
     <tr>
       <th>4.0</th>
-      <td>0.500000</td>
-      <td>0.500000</td>
-      <td>0.500000</td>
-      <td>6.00000</td>
+      <td>0.888889</td>
+      <td>0.727273</td>
+      <td>0.800000</td>
+      <td>11.000000</td>
     </tr>
     <tr>
       <th>accuracy</th>
-      <td>0.807050</td>
-      <td>0.807050</td>
-      <td>0.807050</td>
-      <td>0.80705</td>
+      <td>0.792208</td>
+      <td>0.792208</td>
+      <td>0.792208</td>
+      <td>0.792208</td>
     </tr>
     <tr>
       <th>macro avg</th>
-      <td>0.713180</td>
-      <td>0.747017</td>
-      <td>0.722995</td>
-      <td>1078.00000</td>
+      <td>0.809270</td>
+      <td>0.744891</td>
+      <td>0.771927</td>
+      <td>1078.000000</td>
     </tr>
     <tr>
       <th>weighted avg</th>
-      <td>0.820400</td>
-      <td>0.807050</td>
-      <td>0.810638</td>
-      <td>1078.00000</td>
+      <td>0.793490</td>
+      <td>0.792208</td>
+      <td>0.792236</td>
+      <td>1078.000000</td>
     </tr>
   </tbody>
 </table>
@@ -934,8 +934,8 @@ Name: Natural_growth_rate, dtype: int64</code></pre>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co">#ConfusionMatrixDisplay(matrix).plot()</span></span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>ConfusionMatrixDisplay.from_predictions(y_test, yp_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="38">
-<pre><code>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x1eba5512c20&gt;</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="19">
+<pre><code>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x28cd79d29e0&gt;</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <p><img src="svm_files/figure-html/cell-20-output-2.png" width="522" height="429"></p>
